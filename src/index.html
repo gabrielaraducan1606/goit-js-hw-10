@@ -4,61 +4,46 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Homework 10</title>
-    <link
-      href="https://cdn.jsdelivr.net/npm/slim-select@1.27.0/dist/slimselect.min.css"
-      rel="stylesheet"
-    />
     <style>
       body {
         font-family: Arial, sans-serif;
-        text-align: center;
-        padding: 15px;
+        padding: 20px;
+        background-color: #f0f0f0;
       }
 
-      .hidden {
-        display: none;
-      }
-
-      .breed-select {
-        margin: 10px;
-        padding: 10px;
-        font-size: 20px;
+      #app {
+        max-width: 600px;
+        margin: 0 auto;
       }
 
       .loader {
-        font-size: 20px;
-        color: blue;
+        font-size: 1.5em;
+        text-align: center;
       }
 
       .error {
         color: red;
-        font-size: 18px;
+        text-align: center;
       }
 
       .cat-info img {
-        max-width: 50%;
+        max-width: 100%;
         height: auto;
-        margin-top: 20px;
+        display: block;
+        margin-bottom: 15px;
       }
 
-      .cat-info p {
-        margin: 10px;
-        font-size: 20px;
+      .cat-info h2 {
+        margin-top: 0;
       }
     </style>
   </head>
   <body>
-    <select class="breed-select"></select>
+    <select id="breed-select" style="display: none"></select>
     <p class="loader">Loading data, please wait...</p>
     <p class="error">Oops! Something went wrong! Try reloading the page!</p>
     <div class="cat-info"></div>
-    <script src="https://cdn.jsdelivr.net/npm/notiflix@3.2.5/dist/notiflix-aio-3.2.5.min.js"></script>
 
-    <script src="https://cdn.jsdelivr.net/npm/slim-select@1.27.0/dist/slimselect.min.js"></script>
-
-    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-
-    <script src="./cat-api.js"></script>
     <script src="index.js" type="module"></script>
   </body>
 </html>

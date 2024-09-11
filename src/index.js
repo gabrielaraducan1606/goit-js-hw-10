@@ -1,79 +1,76 @@
 import { fetchBreeds, fetchCatByBreed } from './cat-api.js';
+import Notiflix from 'notiflix';
 
+document.addEventListener('DOMContentLoaded', () => {
+    const breedSelect = document.getElementById('breed-select');
+    const loader = document.querySelector('.loader');
+    const errorElement = document.querySelector('.error');
+    const catInfo = document.querySelector('.cat-info');
+    const catImage = document.getElementById('cat-image');
+    const catName = document.getElementById('cat-name');
+    const catDescription = document.getElementById('cat-description');
+    const catTemperament = document.getElementById('cat-temperament');
 
-const breedSelect = document.querySelector('#breed-select');
-const loader = document.querySelector('.loader');
-const error = document.querySelector('.error');
-const catInfo = document.querySelector('.cat-info');
+    // Funcția pentru a popula lista de rase
+    function populateBreeds() {
+        showLoader(true);
+        fetchBreeds()
+            .then(breeds => {
+                breeds.forEach(breed => {
+                    const option = document.createElement('option');
+                    option.value = breed.id;
+                    option.textContent = breed.name;
+                    breedSelect.appendChild(option);
+                });
+                showLoader(false);
+                breedSelect.style.display = 'block';
+            })
+            .catch(() => {
+                showError(true);
+                showLoader(false);
+            });
+    }
 
-function showLoader() {
-  loader.classList.remove('hidden');
-}
+    // Funcția pentru a afișa informațiile despre pisică
+    function showCatInfo(breedId) {
+        showLoader(true);
+        fetchCatByBreed(breedId)
+            .then(catData => {
+                catImage.src = catData.url;
+                catName.textContent = catData.breeds[0].name;
+                catDescription.textContent = catData.breeds[0].description;
+                catTemperament.textContent = catData.breeds[0].temperament;
+                showLoader(false);
+                catInfo.style.display = 'block';
+            })
+            .catch(() => {
+                showError(true);
+                showLoader(false);
+            });
+    }
 
-function hideLoader() {
-  loader.classList.add('hidden');
-}
+    // Gestionarea schimbării în selectul de rase
+    breedSelect.addEventListener('change', () => {
+        const breedId = breedSelect.value;
+        if (breedId) {
+            catInfo.style.display = 'none';
+            showCatInfo(breedId);
+        }
+    });
 
-function showError(message) {
-  Notiflix.Notify.failure(message);
-  error.classList.remove('hidden');
-  hideLoader();
-}
+    // Funcție pentru a afișa sau ascunde loaderul
+    function showLoader(isVisible) {
+        loader.style.display = isVisible ? 'block' : 'none';
+    }
 
-function hideError() {
-  error.classList.add('hidden');
-}
+    // Funcție pentru a afișa sau ascunde mesajul de eroare
+    function showError(isVisible) {
+        errorElement.style.display = isVisible ? 'block' : 'none';
+        if (isVisible) {
+            Notiflix.Notify.failure('An error occurred while fetching data.');
+        }
+    }
 
-async function init() {
-  try {
-    showLoader(); 
-    hideError(); 
-    breedSelect.classList.add('hidden'); 
-    const breeds = await fetchBreeds(); 
-    populateBreedSelect(breeds); 
-    breedSelect.classList.remove('hidden');
-  } catch (err) {
-    showError('Failed to load breeds.');
-  } finally {
-    hideLoader();
-  }
-}
-
-
-function populateBreedSelect(breeds) {
-  const options = breeds.map(breed => `<option value="${breed.id}">${breed.name}</option>`).join('');
-  breedSelect.innerHTML = options;
-}
-
-
-breedSelect.addEventListener('change', async (event) => {
-  const breedId = event.target.value;
-  if (!breedId) return;
-
-  showLoader(); 
-  catInfo.classList.add('hidden'); 
-  hideError();
-
-  try {
-    const catData = await fetchCatByBreed(breedId);
-    displayCatInfo(catData); 
-  } catch (err) {
-    showError('Failed to load cat details.');
-  } finally {
-    hideLoader(); 
-  }
+    // Inițializare aplicație
+    populateBreeds();
 });
-
-
-function displayCatInfo(catData) {
-  const { url, breeds } = catData;
-  const breed = breeds[0]; 
-  catInfo.innerHTML = `
-    <img src="${url}" alt="${breed.name}" width="400">
-    <h2>${breed.name}</h2>
-    <p><strong>Descriere:</strong> ${breed.description}</p>
-    <p><strong>Temperament:</strong> ${breed.temperament}</p>
-  `;
-  catInfo.classList.remove('hidden'); 
-}
-init();

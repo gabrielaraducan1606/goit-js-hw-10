@@ -1,5 +1,6 @@
 import axios from 'axios';
-axios.defaults.headers.common['x-api-key'] = 'live_bMlXXLOTrCzT7g5hOJEbFPNm8lmDWioZHkPaXZF6FyihIY4KDwqCxTURkdh1KJTP'; 
+
+axios.defaults.headers.common['x-api-key'] = 'live_bMlXXLOTrCzT7g5hOJEbFPNm8lmDWioZHkPaXZF6FyihIY4KDwqCxTURkdh1KJTP';  // Adaugă cheia ta API
 
 export async function fetchBreeds() {
   try {
