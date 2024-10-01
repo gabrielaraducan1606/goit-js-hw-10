@@ -8,7 +8,6 @@ const loader = document.querySelector('.loader');
 const errorElement = document.querySelector('.error');
 const catInfo = document.querySelector('.cat-info');
 
-// Ascunde elementele pe durata încărcării
 function toggleLoader(isLoading) {
     loader.classList.toggle('hidden', !isLoading);
 }
@@ -21,7 +20,6 @@ function toggleCatInfo(isVisible) {
     catInfo.classList.toggle('hidden', !isVisible);
 }
 
-// Populează lista cu rase
 fetchBreeds()
     .then(breeds => {
         breedSelect.innerHTML = breeds.map(breed => `<option value="${breed.id}">${breed.name}</option>`).join('');
@@ -32,7 +30,6 @@ fetchBreeds()
         Notiflix.Notify.failure('Failed to load breeds');
     });
 
-// Eveniment la schimbarea selecției
 breedSelect.addEventListener('change', (event) => {
     const breedId = event.target.value;
     if (!breedId) return;
