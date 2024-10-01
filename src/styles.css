@@ -28,6 +28,10 @@ body {
     margin-top: 10px;
 }
 .breed-select{
-    width: 150px;
-    margin-left: 45%;
+    width: 10%;
+}
+
+.cat-info img{
+    width: 400px;
+    margin-left: 10%;
 }
